@@ -13,18 +13,24 @@ var distancePrinted = false;
 // console.log(moment());
 
 console.log(``);
+fs.appendFileSync('log.txt', ` - \n`);
 console.log(``);
+fs.appendFileSync('log.txt', ` - \n`);
+
+fs.writeFileSync('log.txt', `${moment()} – Eagle is On\n`);
 
 geocode.reverse_geocode(start_loc, (err, add) => {
   if (err) {
     console.log('SOME KIND OF ERR');
   } else {
     console.log(`> FROM: ${add.address}`);
+    fs.appendFileSync('log.txt', `> FROM: ${add.address}\n`);
     geocode.reverse_geocode(end_loc, (err, add) => {
       if (err) {
         console.log('SOME KIND OF ERR');
       } else {
         console.log(`> TO: ${add.address}`);
+        fs.appendFileSync('log.txt', `> TO: ${add.address}\n`);
       }
     });
   }
@@ -42,10 +48,12 @@ setInterval(function (){
       if (!distancePrinted) {
         console.log(``);
         console.log(`> Distance: ${prices[0].distance} miles`);
+        fs.appendFileSync('log.txt', `> Distance: ${prices[0].distance} miles\n`);
         distancePrinted = true;
       }
 
       console.log(`> ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate} – ${moment()}`);
+      fs.appendFileSync('log.txt', `> ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate} – ${moment()}\n`);
 
       // for (var i = prices.length - 1; i >= 0; i--) {
       //   console.log(`> ${prices[i].localized_display_name}: $${prices[i].low_estimate}–${prices[i].high_estimate}`);
@@ -55,10 +63,8 @@ setInterval(function (){
       // console.log(``);
     }
   });
-}, 60000);
+}, 6000);
 
-// console.log(``);
-// console.log(``);
 
 
 
