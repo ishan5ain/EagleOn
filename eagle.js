@@ -1,51 +1,66 @@
 const request = require('request');
 const fs = require('fs');
 const geocode = require('./geocode/geocode');
+const uber = require('./uber/uber');
+const moment = require('moment');
+moment().format();
 
 var start_loc = [37.386528, -122.066831];
 var end_loc = [37.368049, -122.000290];
 
-var myKey = 'AIzaSyBmzOkGZOjLtezQM9uWltLmEAh1eKhM0Y0';
+var distancePrinted = false;
 
-var price_estimates = {
-  url: `https://api.uber.com/v1.2/estimates/price?start_latitude=${start_loc[0]}&start_longitude=${start_loc[1]}&end_latitude=${end_loc[0]}&end_longitude=${end_loc[1]}`,
-  headers: {
-    Authorization: 'Bearer JA.VUNmGAAAAAAAEgASAAAABwAIAAwAAAAAAAAAEgAAAAAAAAG8AAAAFAAAAAAADgAQAAQAAAAIAAwAAAAOAAAAkAAAABwAAAAEAAAAEAAAAD5Lh4pBgHnaLJy3UqtT3tZsAAAAm5xFeK4992zVvEhItH5YlWdJCtLVONdcdeReLQbLYkHWtZ2yLKFCXY1trc8T3fey0FkzLPobGqFDNzMdNt3DRKgDlhQTdZMSn5CzPZGG2C-Bqlicu-GFfY2IYrHEu48lwNZUaH3xDceO6hU0DAAAAJi4-JxymwhxbPF6_yQAAABiMGQ4NTgwMy0zOGEwLTQyYjMtODA2ZS03YTRjZjhlMTk2ZWU',
-    json: true
-  }
-}
+// console.log(moment());
 
-
-geocode.reverse_geocode(end_loc, (err, add) => {
-  if (err) {
-    console.log('SOME KIND OF ERR');
-  } else {
-    console.log(add.address);
-  }
-});
+console.log(``);
+console.log(``);
 
 geocode.reverse_geocode(start_loc, (err, add) => {
   if (err) {
     console.log('SOME KIND OF ERR');
   } else {
-    console.log(add.address);
+    console.log(`> FROM: ${add.address}`);
+    geocode.reverse_geocode(end_loc, (err, add) => {
+      if (err) {
+        console.log('SOME KIND OF ERR');
+      } else {
+        console.log(`> TO: ${add.address}`);
+      }
+    });
   }
 });
 
-// var reverse_geocode = {
-//   url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${end_loc[0]},${end_loc[1]}&key=${myKey}`,
-//   json: true
-// }
-// request(reverse_geocode, function(err, res, body){
-//   console.log(body.results[0].formatted_address);
-//   fs.writeFileSync('reverse_geocode.json', body);
-// });
 
-// request(price_estimates, function(error, res, body) {
-//   console.log(JSON.stringify(body, undefined, 2));
-//   console.log(body);
-//   fs.writeFileSync('response.json', body);
-// });
+setInterval(function (){
+  uber.getPriceEstimates(start_loc, end_loc, (err, prices) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // console.log(prices);
+      // fs.writeFileSync('prices.json', JSON.stringify(prices, undefined, 2));
+      // console.log(``);
+      if (!distancePrinted) {
+        console.log(``);
+        console.log(`> Distance: ${prices[0].distance} miles`);
+        distancePrinted = true;
+      }
+
+      console.log(`> ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate} – ${moment()}`);
+
+      // for (var i = prices.length - 1; i >= 0; i--) {
+      //   console.log(`> ${prices[i].localized_display_name}: $${prices[i].low_estimate}–${prices[i].high_estimate}`);
+      //   // console.log(`> $${prices[i].low_estimate}–${prices[i].high_estimate}`);
+      // }
+      // console.log(``);
+      // console.log(``);
+    }
+  });
+}, 60000);
+
+// console.log(``);
+// console.log(``);
+
+
 
 
 //https://api.uber.com/v1.2/estimates/price?start_latitude=37.7752315&start_longitude=-122.418075&end_latitude=37.7752415&end_longitude=-122.518075

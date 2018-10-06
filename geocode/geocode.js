@@ -1,10 +1,10 @@
 const request = require('request');
 
-var myKey = 'AIzaSyBmzOkGZOjLtezQM9uWltLmEAh1eKhM0Y0';
+var googleApiKey = 'AIzaSyBmzOkGZOjLtezQM9uWltLmEAh1eKhM0Y0';
 
 var reverse_geocode = (loc, callback) => {
   request({
-    url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${loc[0]},${loc[1]}&key=${myKey}`,
+    url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${loc[0]},${loc[1]}&key=${googleApiKey}`,
     json: true
   }, function (err, res, body ) {
     if (err) {
