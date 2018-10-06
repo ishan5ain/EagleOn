@@ -36,24 +36,43 @@ geocode.reverse_geocode(start_loc, (err, add) => {
   }
 });
 
+// uber.getToken();
+
+// uber.getRequestEstimate(start_loc, end_loc, (err, data) => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(data.fare.value);
+//     fs.writeFileSync('requestEstimate.json', data);
+//   }
+// });
+
 
 setInterval(function (){
   uber.getPriceEstimates(start_loc, end_loc, (err, prices) => {
     if (err) {
       console.log(err);
     } else {
-      // console.log(prices);
-      // fs.writeFileSync('prices.json', JSON.stringify(prices, undefined, 2));
-      // console.log(``);
       if (!distancePrinted) {
         console.log(``);
         console.log(`> Distance: ${prices[0].distance} miles`);
+        fs.writeFileSync('response.json', JSON.stringify(prices, undefined, 2));
         fs.appendFileSync('log.txt', `> Distance: ${prices[0].distance} miles\n`);
         distancePrinted = true;
       }
 
-      console.log(`> ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate} – ${moment()}`);
-      fs.appendFileSync('log.txt', `> ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate} – ${moment()}\n`);
+      console.log(`> ${moment()} – ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate}`);
+      fs.appendFileSync('log.txt', `> ${moment()} – ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate}`);
+
+      uber.getRequestEstimate(start_loc, end_loc, prices[prices.length-1].product_id, (err, data) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(`> Actually, $${data.fare.value}`);
+          fs.appendFileSync('log.txt', `  Actually, $${data.fare.value}\n`)
+          fs.writeFileSync('requestEstimate.json', data);
+        }
+      });
 
       // for (var i = prices.length - 1; i >= 0; i--) {
       //   console.log(`> ${prices[i].localized_display_name}: $${prices[i].low_estimate}–${prices[i].high_estimate}`);

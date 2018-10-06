@@ -1,10 +1,10 @@
-Sat Oct 06 2018 04:12:48 GMT-0700 – Eagle is On
+Sat Oct 06 2018 09:28:28 GMT-0700 – Eagle is On
 > FROM: 155 E Dana St, Mountain View, CA 94041, USA
 > TO: 1093 Reed Ave, Sunnyvale, CA 94086, USA
 > Distance: 5.58 miles
-> UberX: $11–15 – Sat Oct 06 2018 04:12:55 GMT-0700
-> UberX: $11–15 – Sat Oct 06 2018 04:13:01 GMT-0700
-> UberX: $11–15 – Sat Oct 06 2018 04:13:07 GMT-0700
-> UberX: $11–15 – Sat Oct 06 2018 04:13:14 GMT-0700
-> UberX: $11–15 – Sat Oct 06 2018 04:13:19 GMT-0700
-> UberX: $11–15 – Sat Oct 06 2018 04:13:25 GMT-0700
+> Sat Oct 06 2018 09:28:35 GMT-0700 – UberX: $12–15  Actually, $13.49
+> Sat Oct 06 2018 09:28:41 GMT-0700 – UberX: $12–15  Actually, $13.49
+> Sat Oct 06 2018 09:28:47 GMT-0700 – UberX: $12–15  Actually, $13.49
+> Sat Oct 06 2018 09:28:53 GMT-0700 – UberX: $12–15  Actually, $13.49
+> Sat Oct 06 2018 09:28:59 GMT-0700 – UberX: $12–15  Actually, $13.49
+> Sat Oct 06 2018 09:29:05 GMT-0700 – UberX: $12–15  Actually, $13.49
