@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ishan5ain/EagleOn/issues"
   },
-  "homepage": "https://github.com/ishan5ain/EagleOn#readme"
+  "homepage": "https://github.com/ishan5ain/EagleOn#readme",
+  "dependencies": {
+    "request": "^2.88.0"
+  }
 }
