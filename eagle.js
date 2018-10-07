@@ -10,42 +10,34 @@ var end_loc = [37.368049, -122.000290];
 
 var distancePrinted = false;
 
+var nowLog = `./logs/log_${moment()}.txt`;
+
 // console.log(moment());
 
 console.log(``);
-fs.appendFileSync('log.txt', ` - \n`);
+fs.writeFileSync(nowLog, ` - \n`);
 console.log(``);
-fs.appendFileSync('log.txt', ` - \n`);
+fs.appendFileSync(nowLog, ` - \n`);
 
-fs.writeFileSync('log.txt', `${moment()} – Eagle is On\n`);
+fs.appendFileSync(nowLog, `${moment()} – Eagle is On\n`);
 
 geocode.reverse_geocode(start_loc, (err, add) => {
   if (err) {
     console.log('SOME KIND OF ERR');
   } else {
     console.log(`> FROM: ${add.address}`);
-    fs.appendFileSync('log.txt', `> FROM: ${add.address}\n`);
+    fs.appendFileSync(nowLog, `> FROM: ${add.address}\n`);
     geocode.reverse_geocode(end_loc, (err, add) => {
       if (err) {
         console.log('SOME KIND OF ERR');
       } else {
         console.log(`> TO: ${add.address}`);
-        fs.appendFileSync('log.txt', `> TO: ${add.address}\n`);
+        fs.appendFileSync(nowLog, `> TO: ${add.address}\n`);
       }
     });
   }
 });
 
-// uber.getToken();
-
-// uber.getRequestEstimate(start_loc, end_loc, (err, data) => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log(data.fare.value);
-//     fs.writeFileSync('requestEstimate.json', data);
-//   }
-// });
 
 
 setInterval(function (){
@@ -53,23 +45,25 @@ setInterval(function (){
     if (err) {
       console.log(err);
     } else {
+
       if (!distancePrinted) {
         console.log(``);
         console.log(`> Distance: ${prices[0].distance} miles`);
         fs.writeFileSync('response.json', JSON.stringify(prices, undefined, 2));
-        fs.appendFileSync('log.txt', `> Distance: ${prices[0].distance} miles\n`);
+        fs.appendFileSync(nowLog, `> Distance: ${prices[0].distance} miles\n`);
         distancePrinted = true;
       }
 
       console.log(`> ${moment()} – ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate}`);
-      fs.appendFileSync('log.txt', `> ${moment()} – ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate}`);
+      fs.appendFileSync(nowLog, `> ${moment()} – ${prices[prices.length-1].localized_display_name}: $${prices[prices.length-1].low_estimate}–${prices[prices.length-1].high_estimate}`);
 
+      //fetching actual price estimate
       uber.getRequestEstimate(start_loc, end_loc, prices[prices.length-1].product_id, (err, data) => {
         if (err) {
           console.log(err);
         } else {
           console.log(`> Actually, $${data.fare.value}`);
-          fs.appendFileSync('log.txt', `  Actually, $${data.fare.value}\n`)
+          fs.appendFileSync(nowLog, `  Actually, $${data.fare.value}\n`)
           fs.writeFileSync('requestEstimate.json', data);
         }
       });
